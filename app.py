@@ -113,28 +113,28 @@ if st.button(" Analyze"):
 
         with st.spinner(" Analyzing..."):
             model = load_pipeline(model_name)
-            results = model(text, top_k=2)
+            results = model(text)   # ✅ Only top prediction
 
         st.success(" Analysis Complete")
 
-        # Show results
-        for i, res in enumerate(results):
-            label = res["label"].lower()
-            score = res["score"]
+        # Show only one result
+        res = results[0]
+        label = res["label"].lower()
+        score = res["score"]
 
-            emoji = emoji_map.get(label, "")
+        emoji = emoji_map.get(label, "")
 
-            st.markdown(f"""
-### 🔹 Prediction {i+1}
+        st.markdown(f"""
+### 🔹 Result
  **Label:** {label} {emoji}  
  **Confidence:** {score:.4f}  
  **{confidence_text(score)}**
 """)
 
-            st.progress(float(score))
+        st.progress(float(score))
 
         # Save history
-        st.session_state.history.append((text, results[0]["label"]))
+        st.session_state.history.append((text, res["label"]))
 
 # Show history
 if st.session_state.history:
