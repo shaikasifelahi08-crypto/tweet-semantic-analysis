@@ -6,32 +6,32 @@ st.set_page_config(page_title="Tweet Semantic Analysis", page_icon="🧠")
 
 # Sidebar
 with st.sidebar:
-    st.title("⚙️ Settings")
+    st.title(" Settings")
     model_choice = st.selectbox(
         "Select Model",
         ["Auto", "RoBERTa", "BERT", "ALBERT"]
     )
 
 # Title
-st.title("🧠 Tweet Semantic Analysis")
+st.title("Tweet Semantic Analysis")
 st.markdown("### Analyze Tweets using AI Models")
 st.divider()
 
 # Example buttons
 col1, col2 = st.columns(2)
 with col1:
-    if st.button("😊 Example: Positive"):
+    if st.button(" Example: Positive"):
         st.session_state.text = "I love this product!"
 with col2:
-    if st.button("😢 Example: Sad"):
+    if st.button(" Example: Sad"):
         st.session_state.text = "I feel very sad today"
 
 # Input
-text = st.text_area("✍️ Enter Tweet / Comment", value=st.session_state.get("text", ""))
+text = st.text_area(" Enter Tweet / Comment", value=st.session_state.get("text", ""))
 
 # Task selection
 task = st.selectbox(
-    "📌 Select Task",
+    " Select Task",
     ["Sentiment", "Emotion", "Hate Speech", "Irony"]
 )
 
@@ -92,30 +92,30 @@ emoji_map = {
 # Confidence interpretation
 def confidence_text(score):
     if score > 0.8:
-        return "High Confidence 🔥"
+        return "High Confidence "
     elif score > 0.5:
-        return "Medium Confidence ⚠️"
+        return "Medium Confidence "
     else:
-        return "Low Confidence ❗"
+        return "Low Confidence "
 
 # History
 if "history" not in st.session_state:
     st.session_state.history = []
 
 # Analyze
-if st.button("🚀 Analyze"):
+if st.button(" Analyze"):
     if text.strip() == "":
-        st.warning("⚠️ Please enter some text")
+        st.warning(" Please enter some text")
     elif len(text.split()) < 3:
-        st.warning("⚠️ Enter a meaningful sentence")
+        st.warning(" Enter a meaningful sentence")
     else:
         model_name = get_model(task, model_choice)
 
-        with st.spinner("🔍 Analyzing..."):
+        with st.spinner(" Analyzing..."):
             model = load_pipeline(model_name)
             results = model(text, top_k=2)
 
-        st.success("✅ Analysis Complete")
+        st.success(" Analysis Complete")
 
         # Show results
         for i, res in enumerate(results):
@@ -126,9 +126,9 @@ if st.button("🚀 Analyze"):
 
             st.markdown(f"""
 ### 🔹 Prediction {i+1}
-🏷️ **Label:** {label} {emoji}  
-📊 **Confidence:** {score:.4f}  
-🔥 **{confidence_text(score)}**
+ **Label:** {label} {emoji}  
+ **Confidence:** {score:.4f}  
+ **{confidence_text(score)}**
 """)
 
             st.progress(float(score))
@@ -141,4 +141,4 @@ if st.session_state.history:
     st.divider()
     st.markdown("### 🧾 Previous Predictions")
     for t, r in st.session_state.history[-5:]:
-        st.write(f"👉 {t} → {r}")
+        st.write(f" {t} → {r}")
